@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:theme="@style/AppTheme.NoActionBar">
+
+    </android.support.v7.widget.Toolbar>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
+
+            <ImageView
+                android:id="@+id/profile_pic"
+                android:layout_width="400px"
+                android:layout_height="400px"
+                android:src="@drawable/contact"
+                android:layout_gravity="left"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="5dp"
+                android:layout_gravity="left"
+                android:layout_toLeftOf="@id/profile_pic"
+                android:id="@+id/linearLayout"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
+
+                <TextView
+                    android:id="@+id/lbl_contact"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:text="Contacto"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/name_contact"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginTop="5dp"
+                    android:text="María"/>
+
+                <TextView
+                    android:id="@+id/lbl_mac"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginTop="20dp"
+                    android:text="Dirección MAC Wi-Fi"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/mac_contact"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginTop="5dp"
+                    android:text="30:07:4D:58:0B:4D"/>
+
+                <TextView
+                    android:id="@+id/lbl_colbl_curp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginTop="20dp"
+                    android:text="CURP"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/curp_contact"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginTop="5dp"
+                    android:text="MAAA921211HDFTLD09" />
+
+                <Button
+                    android:id="@+id/btn_edit_contact"
+                    android:layout_marginTop="20dp"
+                    android:layout_gravity="left"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:textColor="@color/cardview_light_background"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="EDITAR"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>
+
