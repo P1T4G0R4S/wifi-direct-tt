@@ -27,7 +27,7 @@ public enum DeviceType {
     RANGE_EXTENDER_WRES(9),
     EMITTER(4);
 
-    public int id;
+    private int id;
 
     DeviceType(int id) {
         this.id = id;

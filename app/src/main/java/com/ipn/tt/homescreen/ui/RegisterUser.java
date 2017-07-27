@@ -14,6 +14,7 @@ import com.ipn.tt.homescreen.R;
 import com.ipn.tt.homescreen.db.DBManager;
 import com.ipn.tt.homescreen.db.User;
 import com.ipn.tt.homescreen.db.UserType;
+import com.ipn.tt.homescreen.network.DeviceType;
 
 /**
  * Created by Iguanna on 25/07/2017.
@@ -60,6 +61,7 @@ public class RegisterUser extends AppCompatActivity{
                         //Set SharedPreferences
                         SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("Options", MODE_PRIVATE).edit();
                         editor.putBoolean("registered", true);
+                        editor.putInt("devicetype", DeviceType.EMITTER.getCode());
                         editor.commit();
                     }
                     catch(Exception ex){

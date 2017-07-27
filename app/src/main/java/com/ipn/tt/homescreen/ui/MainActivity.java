@@ -47,34 +47,40 @@ public class MainActivity extends AppCompatActivity {
         pref = this.getSharedPreferences("Options", MODE_PRIVATE);
 
         if(pref.getBoolean("registered",false)){
-            List<Detail> mList = new ArrayList<>();
-
-
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
-
-            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getApplicationContext(), ContactCreate.class);
-                    startActivity(intent);
-                }
-            });
-
-            //Obtener de la base de datos
-            db = new DBManager(this);
-            db.open();
-            ArrayList<User> usrs = db.fetchAllUsuario(new String[]{"1"});
-            db.close();
-
-            for (int i = 0; i < usrs.size(); i++) {
-                mList.add(new Detail(usrs.get(i)));
+            if(pref.getInt("devicetype",0) == 4){
+                finish();
+                Intent intent = new Intent(this, ContactSearch.class);
+                startActivity(intent);
             }
-            mRecyclerView = (RecyclerView) findViewById(R.id.cardList);
-            mRecyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
-            mAdapter = new RecycleAdapter(this, mList);
-            mRecyclerView.setAdapter(mAdapter);
+            else{
+                List<Detail> mList = new ArrayList<>();
+
+                Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+                setSupportActionBar(toolbar);
+
+                FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getApplicationContext(), ContactCreate.class);
+                        startActivity(intent);
+                    }
+                });
+
+                //Obtener de la base de datos
+                db = new DBManager(this);
+                db.open();
+                ArrayList<User> usrs = db.fetchAllUsuario(new String[]{"1"});
+                db.close();
+
+                for (int i = 0; i < usrs.size(); i++) {
+                    mList.add(new Detail(usrs.get(i)));
+                }
+                mRecyclerView = (RecyclerView) findViewById(R.id.cardList);
+                mRecyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
+                mAdapter = new RecycleAdapter(this, mList);
+                mRecyclerView.setAdapter(mAdapter);
+            }
         }
         else{
             //Set SharedPreferences
