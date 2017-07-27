@@ -27,7 +27,8 @@
         <activity android:name=".ui.ContactCreate"
             android:parentActivityName="com.ipn.tt.homescreen.ui.MainActivity">
         </activity>
-        <activity android:name=".ui.Wizard"></activity>
+        <activity android:name=".ui.RegisterUser">
+        </activity>
     </application>
 
 </manifest>

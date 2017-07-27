@@ -23,6 +23,7 @@ import android.support.v4.view.ViewPager;
 import com.ipn.tt.homescreen.R;
 import com.ipn.tt.homescreen.db.DBManager;
 import com.ipn.tt.homescreen.db.User;
+import com.ipn.tt.homescreen.db.UserType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         pref = this.getSharedPreferences("Options", MODE_PRIVATE);
 
-        //if(pref.getBoolean("registered",false)){
+        if(pref.getBoolean("registered",false)){
             List<Detail> mList = new ArrayList<>();
 
 
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             //Obtener de la base de datos
             db = new DBManager(this);
             db.open();
-            ArrayList<User> usrs = db.fetchAllUsuario();
+            ArrayList<User> usrs = db.fetchAllUsuario(new String[]{"1"});
             db.close();
 
             for (int i = 0; i < usrs.size(); i++) {
@@ -74,13 +75,13 @@ public class MainActivity extends AppCompatActivity {
             mRecyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
             mAdapter = new RecycleAdapter(this, mList);
             mRecyclerView.setAdapter(mAdapter);
-        //}
-        //else{
+        }
+        else{
             //Set SharedPreferences
-            /*finish();
-            Intent intent = new Intent(this, Wizard.class);
+            finish();
+            Intent intent = new Intent(this, RegisterUser.class);
             startActivity(intent);
-        }*/
+        }
     }
 
     @Override
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         //Obtener de la base de datos
         db = new DBManager(this);
         db.open();
-        ArrayList<User> usrs = db.fetchAllUsuario();
+        ArrayList<User> usrs = db.fetchAllUsuario(new String[]{"1"});
         db.close();
 
         for (int i = 0; i < usrs.size(); i++) {

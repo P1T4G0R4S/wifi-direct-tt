@@ -1,126 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:theme="@style/AppTheme.NoActionBar">
-
     </android.support.v7.widget.Toolbar>
-
-    <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/circle_img"
-        android:layout_gravity="top"
+    <FrameLayout
         android:orientation="vertical"
-        >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_gravity="left"
-            android:text="ROL DISPOSITIVO"
-            android:gravity="center"
-            android:background="@color/colorPrimary"
-            android:textColor="@color/white"
-            android:textStyle="bold"/>
-
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/circle_img"
+            android:layout_gravity="top"
+            android:orientation="vertical"
+            >
 
             <TextView
-                android:id="@+id/mac_address"
                 android:layout_width="fill_parent"
-                android:layout_height="35dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="left"
+                android:text="RANGE_EXTENDER"
                 android:gravity="center"
                 android:background="@color/colorPrimary"
                 android:textColor="@color/white"
-                android:text="Dispositivos Disponibles"/>
+                android:textStyle="bold"/>
 
-            <ImageButton
-                android:id="@+id/btn_search_wifi"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:src="@drawable/ic_action_refresh"
-                android:background="@android:color/transparent"
-                android:paddingRight="10dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
-        </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/lbl_device_name"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center"
-            android:text="SM-G950F"
-            android:textStyle="bold"
-            android:background="@color/colorPrimary"
-            android:textColor="@color/white"
-            android:layout_alignParentBottom="true" />
+                <TextView
+                    android:id="@+id/mac_address"
+                    android:layout_width="fill_parent"
+                    android:layout_height="35dp"
+                    android:gravity="center"
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/white"
+                    android:text="Dispositivos Disponibles"/>
 
-        <!-- Al llenar esta lista, si los componentes no se ven
-         hay que darle un margin al layout de content_search.xml
-         del alto del toolbar, los elementos de esta lista se deben
-         basar en search_item.xml, en device info aparece la MAC y el
-         tipo de dispositivo (DeviceType); también sería buena una
-         captura por cada rol, aunque no tengan dispositivos en la lista. -->
-        <include layout="@layout/content_search" />
-    </LinearLayout>
-    <!-- los valores que tienen el '|' son algunos de los posibles valores,
-    necesito una captura con las combinaciones:
-        * Si, Conectado
-        * No, Conectado
-        * No, Disponible
-    -->
-    <LinearLayout
-        android:layout_gravity="bottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+                <ImageButton
+                    android:id="@+id/btn_search_wifi"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/ic_action_refresh"
+                    android:background="@android:color/transparent"
+                    android:paddingRight="10dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+            </RelativeLayout>
 
-        <TextView
-            android:id="@+id/lbl_mac_address"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:paddingLeft="5dp"
-            android:gravity="left"
-            android:text="Dirección MAC: 00:11:22:33:44:55"
-            android:textStyle="bold"
-            android:background="@color/colorPrimary"
-            android:textColor="@color/white"
-            android:layout_alignParentBottom="true" />
+            <TextView
+                android:id="@+id/lbl_device_name"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:text="SM-G950F"
+                android:textStyle="bold"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/white"
+                android:layout_alignParentBottom="true" />
 
-        <TextView
-            android:id="@+id/lbl_group_owner"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:paddingLeft="5dp"
-            android:gravity="left"
-            android:text="Group owner: Sí | No"
-            android:textStyle="bold"
-            android:background="@color/colorPrimary"
-            android:textColor="@color/white"
-            android:layout_alignParentBottom="true" />
+            <!-- Al llenar esta lista, si los componentes no se ven
+             hay que darle un margin al layout de content_search.xml
+             del alto del toolbar, los elementos de esta lista se deben
+             basar en search_item.xml, en device info aparece la MAC y el
+             tipo de dispositivo (DeviceType); también sería buena una
+             captura por cada rol-->
+            <include layout="@layout/content_search" />
+        </LinearLayout>
+        <!-- los valores que tienen el '|' son algunos de los posibles valores,
+        necesito una captura con las combinaciones:
+            * Si, Conectado
+            * No, Conectado
+            * No, Disponible
+        -->
+        <LinearLayout
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/lbl_device_status"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:paddingLeft="5dp"
-            android:gravity="left"
-            android:text="Estatus dispositivo: Disponible | Conectado | No disponible"
-            android:textStyle="bold"
-            android:background="@color/colorPrimary"
-            android:textColor="@color/white"
-            android:layout_alignParentBottom="true" />
-    </LinearLayout>
-</FrameLayout>
+            <TextView
+                android:id="@+id/lbl_mac_address"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:paddingLeft="5dp"
+                android:gravity="left"
+                android:text="Dirección MAC: 45:42:AB:48:BC:3E"
+                android:textStyle="bold"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/white"
+                android:layout_alignParentBottom="true" />
+
+            <TextView
+                android:id="@+id/lbl_group_owner"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:paddingLeft="5dp"
+                android:gravity="left"
+                android:text="Group owner: No"
+                android:textStyle="bold"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/white"
+                android:layout_alignParentBottom="true" />
+
+            <TextView
+                android:id="@+id/lbl_device_status"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:paddingLeft="5dp"
+                android:gravity="left"
+                android:text="Estatus dispositivo: No Disponible"
+                android:textStyle="bold"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/white"
+                android:layout_alignParentBottom="true" />
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

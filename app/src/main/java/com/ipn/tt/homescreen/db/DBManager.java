@@ -45,8 +45,8 @@ public class DBManager {
         database.insert(DatabaseHelper.TABLE_NAME_USERS, null, contentValue);
     }
 
-    public ArrayList<User> fetchAllUsuario() { // all
-        String selection = "";
+    public ArrayList<User> fetchAllUsuario(String[] selectionArgs) { // all
+        String selection = DatabaseHelper.TYPE_USER + " = ? ";
         String[] columns = new String[] {
                 DatabaseHelper.ID_USER,
                 DatabaseHelper.CURP,
@@ -57,7 +57,7 @@ public class DBManager {
                 //DatabaseHelper.RUTE
         };
         Cursor cursor = database.query(
-                DatabaseHelper.TABLE_NAME_USERS, columns, selection, null,
+                DatabaseHelper.TABLE_NAME_USERS, columns, selection, selectionArgs,
                 null, null, null, null);
 
         /*if (cursor != null) {
