@@ -24,6 +24,7 @@ import com.ipn.tt.homescreen.R;
 import com.ipn.tt.homescreen.db.DBManager;
 import com.ipn.tt.homescreen.db.User;
 import com.ipn.tt.homescreen.db.UserType;
+import com.ipn.tt.homescreen.network.DeviceType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private View indicator2;
     private View indicator3;
     private View indicator4;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,39 +49,46 @@ public class MainActivity extends AppCompatActivity {
         pref = this.getSharedPreferences("Options", MODE_PRIVATE);
 
         if(pref.getBoolean("registered",false)){
-            if(pref.getInt("devicetype",0) == 4){
-                finish();
-                Intent intent = new Intent(this, ContactSearch.class);
-                startActivity(intent);
+            if(pref.getInt("devicetype",5) != 5){
+                if(pref.getInt("devicetype",5) == 4){
+                    finish();
+                    Intent intent = new Intent(this, ContactSearch.class);
+                    startActivity(intent);
+                }
+                else{
+                    List<Detail> mList = new ArrayList<>();
+
+                    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+                    setSupportActionBar(toolbar);
+
+                    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+                    fab.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getApplicationContext(), ContactCreate.class);
+                            startActivity(intent);
+                        }
+                    });
+
+                    //Obtener de la base de datos
+                    db = new DBManager(this);
+                    db.open();
+                    ArrayList<User> usrs = db.fetchAllUsuario(new String[]{"1"});
+                    db.close();
+
+                    for (int i = 0; i < usrs.size(); i++) {
+                        mList.add(new Detail(usrs.get(i)));
+                    }
+                    mRecyclerView = (RecyclerView) findViewById(R.id.cardList);
+                    mRecyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
+                    mAdapter = new RecycleAdapter(this, mList);
+                    mRecyclerView.setAdapter(mAdapter);
+                }
             }
             else{
-                List<Detail> mList = new ArrayList<>();
-
-                Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-                setSupportActionBar(toolbar);
-
-                FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-                fab.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(getApplicationContext(), ContactCreate.class);
-                        startActivity(intent);
-                    }
-                });
-
-                //Obtener de la base de datos
-                db = new DBManager(this);
-                db.open();
-                ArrayList<User> usrs = db.fetchAllUsuario(new String[]{"1"});
-                db.close();
-
-                for (int i = 0; i < usrs.size(); i++) {
-                    mList.add(new Detail(usrs.get(i)));
-                }
-                mRecyclerView = (RecyclerView) findViewById(R.id.cardList);
-                mRecyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
-                mAdapter = new RecycleAdapter(this, mList);
-                mRecyclerView.setAdapter(mAdapter);
+                finish();
+                Intent intent = new Intent(this, ChangeDevice.class);
+                startActivity(intent);
             }
         }
         else{
@@ -126,25 +135,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);//Menu Resource, Menu
         return true;
-    }
-
-    private void makeToast(String input){
-        Toast.makeText(this, input, Toast.LENGTH_SHORT).show();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        //if (id == R.id.action_settings) {
-            //return true;
-        //}
-
-        return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.cambiar_perfil:
+                //Toast.makeText(getApplicationContext(),"Item 1 Selected",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(this, ChangeDevice.class);
+                this.startActivity(intent);
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
     }
 }

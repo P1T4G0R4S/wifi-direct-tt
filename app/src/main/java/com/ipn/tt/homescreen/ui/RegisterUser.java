@@ -14,7 +14,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +27,9 @@ import com.ipn.tt.homescreen.db.User;
 import com.ipn.tt.homescreen.db.UserType;
 import com.ipn.tt.homescreen.network.DeviceType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.rit.se.wifibuddy.WifiDirectHandler;
 
 /**
@@ -32,6 +38,7 @@ import edu.rit.se.wifibuddy.WifiDirectHandler;
 
 public class RegisterUser extends AppCompatActivity  {
     String TAG = "RegisterUser";
+    DeviceType deviceType;
     Button btn_register;
     TextView tv_name, tv_curp, tv_mac_address;
     DBManager db;
@@ -68,12 +75,13 @@ public class RegisterUser extends AppCompatActivity  {
                     usr.mac = tv_mac_address.getText().toString();
                     usr.curp = tv_curp.getText().toString();
 
+
                     try{
                         db.insert(usr);
                         //Set SharedPreferences
                         SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("Options", MODE_PRIVATE).edit();
                         editor.putBoolean("registered", true);
-                        editor.putInt("devicetype", DeviceType.EMITTER.getCode());
+                        //editor.putInt("devicetype", deviceType.getCode());
                         editor.commit();
                     }
                     catch(Exception ex){
@@ -81,7 +89,7 @@ public class RegisterUser extends AppCompatActivity  {
                     }
                     db.close();
                     finish();
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), ChangeDevice.class);
                     startActivity(intent);
                 }
 

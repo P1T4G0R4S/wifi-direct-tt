@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:theme="@style/AppTheme.NoActionBar">
+
+    </android.support.v7.widget.Toolbar>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/circle_img"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            >
+            <RadioGroup
+                android:id="@+id/radio_device"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent" >
+
+                <RadioButton
+                    android:id="@+id/radio_intermediario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Intermediario" />
+
+                <RadioButton
+                    android:id="@+id/radio_maestro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Maestro" />
+
+                <RadioButton
+                    android:id="@+id/radio_buscador"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Buscador" />
+
+                <RadioButton
+                    android:id="@+id/radio_emisor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Emisor"
+                    android:checked="true" />
+            </RadioGroup>
+
+            <Button
+                android:layout_width="match_parent"
+                android:id="@+id/btn_save_device"
+                android:layout_height="wrap_content"
+                android:text="Guardar"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/colorAccent"/>
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>
