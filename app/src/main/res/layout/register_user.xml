@@ -58,6 +58,7 @@
 
                 <EditText
                     android:id="@+id/mac_address_register"
+                    android:enabled="false"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
