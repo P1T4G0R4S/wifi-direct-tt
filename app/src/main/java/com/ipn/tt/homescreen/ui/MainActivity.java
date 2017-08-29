@@ -3,7 +3,9 @@ package com.ipn.tt.homescreen.ui;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -46,12 +48,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initEnableExternalStorage();
+
         pref = this.getSharedPreferences("Options", MODE_PRIVATE);
 
         if(pref.getBoolean("registered",false)){
             if(pref.getInt("devicetype",5) != 5){
                 if(pref.getInt("devicetype",5) == 4){
-                    finish();
                     Intent intent = new Intent(this, ContactSearch.class);
                     startActivity(intent);
                 }
@@ -96,6 +99,14 @@ public class MainActivity extends AppCompatActivity {
             finish();
             Intent intent = new Intent(this, RegisterUser.class);
             startActivity(intent);
+        }
+    }
+
+    private void initEnableExternalStorage() {
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            builder.detectFileUriExposure();
         }
     }
 

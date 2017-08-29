@@ -30,6 +30,26 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.0.+'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile project(path: ':wifibuddy')
+    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'org.apache.commons:commons-lang3:3.4'
 
     testCompile 'junit:junit:4.12'
 }
+
+/*tasks.whenTaskAdded { task ->
+    if (task.name == 'assembleDebug') {
+
+        //task.dependsOn 'checkstyle', 'findbugs', 'pmd', 'lint'
+        println '=============assembleDebug============='
+        task.doLast{
+            println '=============generateSources============='
+            def process = "python app/moveAPK.py".execute()
+            // Wait till the process completes before continuing
+            int exitValue = process.waitFor()
+            println "Process exited with value $exitValue"
+        }
+    } else if (task.name == 'assembleRelease') {
+        //task.dependsOn 'checkstyle', 'findbugs', 'pmd', 'lint'
+        println '=============assembleRelease============='
+    }
+}*/

@@ -1,5 +1,6 @@
 package com.ipn.tt.homescreen.ui;
 
+import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -43,9 +44,12 @@ public class RegisterUser extends AppCompatActivity  {
     TextView tv_name, tv_curp, tv_mac_address;
     DBManager db;
     WifiDirectHandler wifiDirectHandler;
+    Context context;
+
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_user);
+        context = this;
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -75,7 +79,6 @@ public class RegisterUser extends AppCompatActivity  {
                     usr.mac = tv_mac_address.getText().toString();
                     usr.curp = tv_curp.getText().toString();
 
-
                     try{
                         db.insert(usr);
                         //Set SharedPreferences
@@ -87,6 +90,10 @@ public class RegisterUser extends AppCompatActivity  {
                     catch(Exception ex){
                         Toast.makeText(getApplicationContext(), "Problema al registrarse en la aplicación: " + ex.getMessage().toString(), Toast.LENGTH_SHORT).show();
                     }
+
+                    context.stopService(new Intent(context, ServiceConnection.class));
+                    context.unbindService(wifiServiceConnection);
+
                     db.close();
                     finish();
                     Intent intent = new Intent(getApplicationContext(), ChangeDevice.class);
@@ -98,8 +105,9 @@ public class RegisterUser extends AppCompatActivity  {
 
         registerCommunicationReceiver();
 
-        Intent intent = new Intent(this, WifiDirectHandler.class);
+        Intent intent = new Intent(context, WifiDirectHandler.class);
         bindService(intent, wifiServiceConnection, BIND_AUTO_CREATE);
+        startService(intent);
     }
 
     private void registerCommunicationReceiver() {

@@ -16,92 +16,104 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_height="wrap_content"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_below="@+id/circle_img"
-            android:layout_gravity="center"
-            android:orientation="vertical"
-            >
-
-            <TextView
-                android:id="@+id/lbl_nombre_edit"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_gravity="left"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="5dp"
-                android:text="Nombre"
-                android:textStyle="bold"/>
-
-            <EditText
-                android:id="@+id/name_register"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="5dp"
-                android:hint="Nombre" />
+                android:layout_below="@+id/circle_img"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                >
 
-            <TextView
-                android:id="@+id/lbl_MAC_edit"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_gravity="left"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="5dp"
-                android:text="Dirección MAC Wi-Fi"
-                android:textStyle="bold"/>
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/mac_address_register"
-                    android:enabled="false"
+                <TextView
+                    android:id="@+id/lbl_MAC_edit"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="left"
                     android:layout_marginTop="5dp"
                     android:layout_marginLeft="5dp"
-                    android:hint="Dirección MAC"/>
+                    android:text="Dirección MAC Wi-Fi"
+                    android:textStyle="bold"/>
 
-                <ImageButton
-                    android:id="@+id/btn_search_wifi"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/mac_address_register"
+                        android:enabled="false"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:hint="Dirección MAC"/>
+
+                    <ImageButton
+                        android:id="@+id/btn_search_wifi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_wifi"
+                        android:background="@android:color/transparent"
+                        android:padding="5dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/lbl_nombre_edit"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="left"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:text="Nombre"
+                    android:textStyle="bold"/>
+
+                <EditText
+                    android:id="@+id/name_register"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:maxLines="1"
+                    android:inputType="text"
+                    android:imeOptions="actionNext"
+                    android:hint="Nombre" >
+                    <requestFocus />
+                </EditText>
+
+                <TextView
+                    android:id="@+id/lbl_CURP_edit"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="left"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:text="CURP"
+                    android:textStyle="bold"/>
+
+                <EditText
+                    android:id="@+id/curp_register"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:maxLines="1"
+                    android:inputType="text"
+                    android:imeOptions="actionDone"
+                    android:hint="CURP"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:id="@+id/btn_register"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_wifi"
-                    android:background="@android:color/transparent"
-                    android:padding="5dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/lbl_CURP_edit"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_gravity="left"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="5dp"
-                android:text="CURP"
-                android:textStyle="bold"/>
-
-            <EditText
-                android:id="@+id/curp_register"
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="5dp"
-                android:hint="CURP"/>
-
-            <Button
-                android:layout_width="match_parent"
-                android:id="@+id/btn_register"
-                android:layout_height="wrap_content"
-                android:text="Registrar"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/colorAccent"/>
-        </LinearLayout>
+                    android:text="Registrar"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/colorAccent"/>
+            </LinearLayout>
+        </ScrollView>
     </FrameLayout>
 </LinearLayout>

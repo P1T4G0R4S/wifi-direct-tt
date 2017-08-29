@@ -2,6 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.ipn.tt.homescreen.ui.MainActivity">
-    <item  android:id="@+id/cambiar_perfil"
+    <item android:id="@+id/cambiar_perfil"
         android:title="Cambiar Perfil"/>
+    <item android:id="@+id/actualizar_app"
+        android:title="Actualizar App"/>
 </menu>
