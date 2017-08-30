@@ -25,27 +25,38 @@
             >
 
             <TextView
+                android:id="@+id/device_role"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_gravity="left"
-                android:text="RANGE_EXTENDER"
+                android:text="@string/empty_field"
+                android:textAllCaps="true"
                 android:gravity="center"
                 android:background="@color/colorPrimary"
                 android:textColor="@color/white"
                 android:textStyle="bold"/>
 
             <RelativeLayout
+                android:background="@color/colorPrimary"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
 
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginStart="10dip"
+                    android:layout_centerVertical="true"
+                    style="@android:style/Widget.ProgressBar.Small"
+                    android:indeterminate="true">
+                </ProgressBar>
+
                 <TextView
-                    android:id="@+id/mac_address"
                     android:layout_width="fill_parent"
                     android:layout_height="35dp"
                     android:gravity="center"
-                    android:background="@color/colorPrimary"
                     android:textColor="@color/white"
-                    android:text="Dispositivos Disponibles"/>
+                    android:text="@string/avaliable_devices"/>
 
                 <ImageButton
                     android:id="@+id/btn_search_wifi"
@@ -64,11 +75,10 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:gravity="center"
-                android:text="SM-G950F"
+                android:text="@string/empty_field"
                 android:textStyle="bold"
                 android:background="@color/colorPrimary"
-                android:textColor="@color/white"
-                android:layout_alignParentBottom="true" />
+                android:textColor="@color/white" />
 
             <!-- Al llenar esta lista, si los componentes no se ven
              hay que darle un margin al layout de content_search.xml
@@ -89,42 +99,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
             <TextView
-                android:id="@+id/lbl_mac_address"
+                android:id="@+id/lbl_device_info"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:paddingLeft="5dp"
-                android:gravity="left"
-                android:text="Dirección MAC: 45:42:AB:48:BC:3E"
+                android:layout_height="80dp"
+                android:padding="5dp"
+                android:text="@string/empty_field"
                 android:textStyle="bold"
                 android:background="@color/colorPrimary"
-                android:textColor="@color/white"
-                android:layout_alignParentBottom="true" />
-
-            <TextView
-                android:id="@+id/lbl_group_owner"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:paddingLeft="5dp"
-                android:gravity="left"
-                android:text="Group owner: No"
-                android:textStyle="bold"
-                android:background="@color/colorPrimary"
-                android:textColor="@color/white"
-                android:layout_alignParentBottom="true" />
-
-            <TextView
-                android:id="@+id/lbl_device_status"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:paddingLeft="5dp"
-                android:gravity="left"
-                android:text="Estatus dispositivo: No Disponible"
-                android:textStyle="bold"
-                android:background="@color/colorPrimary"
-                android:textColor="@color/white"
-                android:layout_alignParentBottom="true" />
+                android:textColor="@color/white" />
         </LinearLayout>
     </FrameLayout>
 </LinearLayout>

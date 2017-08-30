@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,13 +19,18 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ipn.tt.homescreen.R;
 import com.ipn.tt.homescreen.Utils.FileUtils;
 import com.ipn.tt.homescreen.Utils.UpgradeAppUtils;
 import com.ipn.tt.homescreen.adapters.ServiceListViewAdapter;
+import com.ipn.tt.homescreen.network.DeviceType;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -41,9 +47,7 @@ import edu.rit.se.wifibuddy.WifiDirectHandler;
 
 public class ContactSearch extends AppCompatActivity {
     String TAG = "ContactSearch";
-    private RecyclerView mRecyclerView;
-    private RecycleAdapter mAdapter;
-    private List<Detail> mList = new ArrayList<>();
+    private SharedPreferences pref;
     private ListView deviceList;
     private ServiceListViewAdapter servicesListAdapter;
     private List<DnsSdService> services = new ArrayList<>();
@@ -77,7 +81,27 @@ public class ContactSearch extends AppCompatActivity {
     public void onPause() {
         super.onPause();
 
+        removeWifiP2pService();
         removeWifiService();
+    }
+
+    private void prepareResetButton(){
+        ImageButton resetButton = (ImageButton)findViewById(R.id.btn_search_wifi);
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetServiceDiscovery();
+
+            }
+        });
+    }
+
+    private void resetServiceDiscovery(){
+        // Clear the list, notify the list adapter, and start discovering services again
+        Log.i(TAG, "Resetting Service discovery");
+        services.clear();
+        servicesListAdapter.notifyDataSetChanged();
+        wifiDirectHandler.resetServiceDiscovery();
     }
 
     private void setServiceList() {
@@ -89,26 +113,54 @@ public class ContactSearch extends AppCompatActivity {
     }
 
     private void addWifiService() {
+        Log.w(TAG, "Service Wifi added");
         Intent intent = new Intent(context, WifiDirectHandler.class);
         bindService(intent, wifiServiceConnection, BIND_AUTO_CREATE);
         startService(intent);
     }
 
     private void addWifiP2pService() {
+        pref = this.getSharedPreferences("Options", MODE_PRIVATE);
+        int deviceTypePref = pref.getInt("devicetype",999);
+        DeviceType deviceType = DeviceType.get(deviceTypePref);
+
         if (wifiDirectHandler.getWifiP2pServiceInfo() == null) {
             HashMap<String, String> record = new HashMap<>();
             record.put("Name", wifiDirectHandler.getThisDevice().deviceName);
             record.put("Address", wifiDirectHandler.getThisDevice().deviceAddress);
+            record.put("DeviceType", deviceType.toString());
             wifiDirectHandler.addLocalService("Wi-Fi Buddy", record);
-            Log.d(TAG, "Service added");
+            Log.d(TAG, "Service P2p added");
         } else {
-            Log.w(TAG, "Service already added");
+            Log.w(TAG, "Service P2p already added");
         }
     }
 
     private void removeWifiService() {
+        Log.w(TAG, "Service Wifi removed");
         context.stopService(new Intent(context, ServiceConnection.class));
         context.unbindService(wifiServiceConnection);
+    }
+
+    private void removeWifiP2pService() {
+        Log.w(TAG, "Service P2p removed");
+        wifiDirectHandler.removeService();
+    }
+
+    private void showDeviceInformation() {
+        pref = this.getSharedPreferences("Options", MODE_PRIVATE);
+        int deviceTypePref = pref.getInt("devicetype",999);
+        DeviceType deviceType = DeviceType.get(deviceTypePref);
+
+        TextView device_role = (TextView) findViewById(R.id.device_role);
+        device_role.setText(deviceType.toString());
+
+        TextView lbl_device_name = (TextView) findViewById(R.id.lbl_device_name);
+        lbl_device_name.setText(wifiDirectHandler.getThisDevice().deviceName);
+
+        TextView lbl_device_info = (TextView) findViewById(R.id.lbl_device_info);
+        lbl_device_info.setText(wifiDirectHandler.getThisDeviceInfo());
+
     }
 
     private void initEnableExternalStorage() {
@@ -145,6 +197,8 @@ public class ContactSearch extends AppCompatActivity {
                 Log.i(TAG, "This device changed");
                 Log.d(TAG, wifiDirectHandler.getThisDeviceAddress());
                 addWifiP2pService();
+                prepareResetButton();
+                showDeviceInformation();
                 wifiDirectHandler.continuouslyDiscoverServices();
 
             } else if (intent.getAction().equals(WifiDirectHandler.Action.WIFI_STATE_CHANGED)) {
