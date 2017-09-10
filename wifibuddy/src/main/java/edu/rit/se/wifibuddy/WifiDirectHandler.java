@@ -703,6 +703,10 @@ public class WifiDirectHandler extends NonStopIntentService implements
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        if (intent == null) {
+            return;
+        }
+
         String action = intent.getAction();
 
         if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {

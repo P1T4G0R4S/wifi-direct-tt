@@ -75,6 +75,8 @@ public class ContactSearch extends AppCompatActivity {
         initEnableExternalStorage();
         registerCommunicationReceiver();
         addWifiService();
+
+        showDeviceInformation();
     }
 
     @Override
@@ -97,6 +99,16 @@ public class ContactSearch extends AppCompatActivity {
     }
 
     private void resetServiceDiscovery(){
+
+        removeWifiP2pService();
+        removeWifiService();
+
+        setServiceList();
+        initEnableExternalStorage();
+        registerCommunicationReceiver();
+        addWifiService();
+
+
         // Clear the list, notify the list adapter, and start discovering services again
         Log.i(TAG, "Resetting Service discovery");
         services.clear();
@@ -138,6 +150,7 @@ public class ContactSearch extends AppCompatActivity {
 
     private void removeWifiService() {
         Log.w(TAG, "Service Wifi removed");
+        wifiDirectHandler.removeGroup();
         context.stopService(new Intent(context, ServiceConnection.class));
         context.unbindService(wifiServiceConnection);
     }
@@ -154,6 +167,13 @@ public class ContactSearch extends AppCompatActivity {
 
         TextView device_role = (TextView) findViewById(R.id.device_role);
         device_role.setText(deviceType.toString());
+
+        if (wifiDirectHandler == null) {
+            return;
+        }
+        if (wifiDirectHandler.getThisDevice() == null) {
+            return;
+        }
 
         TextView lbl_device_name = (TextView) findViewById(R.id.lbl_device_name);
         lbl_device_name.setText(wifiDirectHandler.getThisDevice().deviceName);
@@ -216,6 +236,17 @@ public class ContactSearch extends AppCompatActivity {
                 Log.d(TAG, "Service Discovered and Accessed " + (new Date()).getTime());
                 String serviceKey = intent.getStringExtra(WifiDirectHandler.SERVICE_MAP_KEY);
                 DnsSdService service = wifiDirectHandler.getDnsSdServiceMap().get(serviceKey);
+
+                if (service.getSrcDevice() == null) {
+                    Log.w(TAG, "Unaccesible source device.");
+                    return;
+                }
+
+                if (service.getSrcDevice().deviceName.equals("")) {
+                    Log.w(TAG, "Unaccesible source device name.");
+                    return;
+                }
+
                 servicesListAdapter.addUnique(service);
 
                 Log.d(TAG + "TEST", "ServicesList count: " + servicesListAdapter.getCount());
