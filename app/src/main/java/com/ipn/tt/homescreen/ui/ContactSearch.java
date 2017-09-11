@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.ipn.tt.homescreen.R;
 import com.ipn.tt.homescreen.Utils.FileUtils;
+import com.ipn.tt.homescreen.Utils.NetworkUtil;
 import com.ipn.tt.homescreen.Utils.UpgradeAppUtils;
 import com.ipn.tt.homescreen.adapters.ServiceListViewAdapter;
 import com.ipn.tt.homescreen.network.DeviceType;
@@ -53,6 +54,7 @@ public class ContactSearch extends AppCompatActivity {
     private List<DnsSdService> services = new ArrayList<>();
     WifiDirectHandler wifiDirectHandler;
     Context context;
+    NetworkUtil networkUtil;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +67,11 @@ public class ContactSearch extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setTitle("Buscando Dispositivos");
         toolbar.setTitleTextColor(0xFFFFFFFF);
+
+        pref = this.getSharedPreferences("Options", MODE_PRIVATE);
+        int deviceTypePref = pref.getInt("devicetype",999);
+        DeviceType deviceType = DeviceType.get(deviceTypePref);
+        networkUtil = NetworkUtil.getInstance(deviceType);
     }
 
     @Override
@@ -219,10 +226,12 @@ public class ContactSearch extends AppCompatActivity {
                 // This device's information has changed
                 Log.i(TAG, "This device changed");
                 Log.d(TAG, wifiDirectHandler.getThisDeviceAddress());
-                addWifiP2pService();
-                prepareResetButton();
-                showDeviceInformation();
-                wifiDirectHandler.continuouslyDiscoverServices();
+                if (wifiDirectHandler.getThisDevice() != null) {
+                    addWifiP2pService();
+                    prepareResetButton();
+                    showDeviceInformation();
+                    wifiDirectHandler.continuouslyDiscoverServices();
+                }
 
             } else if (intent.getAction().equals(WifiDirectHandler.Action.WIFI_STATE_CHANGED)) {
                 // Wi-Fi has been enabled or disabled

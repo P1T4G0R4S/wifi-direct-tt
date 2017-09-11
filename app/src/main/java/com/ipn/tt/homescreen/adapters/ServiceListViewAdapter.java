@@ -1,6 +1,7 @@
 package com.ipn.tt.homescreen.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.ipn.tt.homescreen.R;
+import com.ipn.tt.homescreen.Utils.NetworkUtil;
 import com.ipn.tt.homescreen.ui.ContactSearch;
 
 import java.util.List;
@@ -23,6 +25,7 @@ import edu.rit.se.wifibuddy.DnsSdTxtRecord;
 public class ServiceListViewAdapter extends BaseAdapter {
     private List<DnsSdService> serviceList;
     private ContactSearch context;
+    NetworkUtil networkUtil;
 
     public ServiceListViewAdapter(ContactSearch context, List<DnsSdService> serviceList) {
         this.context = context;
@@ -30,6 +33,23 @@ public class ServiceListViewAdapter extends BaseAdapter {
     }
 
     public Boolean addUnique(DnsSdService service) {
+        Map mapTxtRecord;
+        String strTxtRecord = "";
+        if (context.getWifiHandler() != null) {
+            DnsSdTxtRecord txtRecord = context.getWifiHandler().getDnsSdTxtRecordMap().get(service.getSrcDevice().deviceAddress);
+            if (txtRecord != null) {
+                mapTxtRecord = txtRecord.getRecord();
+                strTxtRecord = mapTxtRecord.get("DeviceType").toString();
+            }
+        }
+
+        Log.d("Adapter", strTxtRecord);
+
+        networkUtil = NetworkUtil.getInstance(null);
+        if (!networkUtil.canDiscoverTo(strTxtRecord)) {
+            return false;
+        }
+
         if (serviceList.contains(service)) {
             int idxService = serviceList.indexOf(service);
             serviceList.set(idxService, service);
