@@ -30,13 +30,16 @@ public class ServiceListViewAdapter extends BaseAdapter {
     }
 
     public Boolean addUnique(DnsSdService service) {
-        /*if (serviceList.contains(service)) {
+        if (serviceList.contains(service)) {
+            int idxService = serviceList.indexOf(service);
+            serviceList.set(idxService, service);
+            this.notifyDataSetChanged();
             return false;
-        } else {*/
+        } else {
             serviceList.add(service);
             this.notifyDataSetChanged();
             return true;
-        //}
+        }
     }
 
     @Override

@@ -6,4 +6,6 @@
         android:title="Cambiar Perfil"/>
     <item android:id="@+id/actualizar_app"
         android:title="Actualizar App"/>
+    <item android:id="@+id/colaborar"
+        android:title="Colaborar"/>
 </menu>

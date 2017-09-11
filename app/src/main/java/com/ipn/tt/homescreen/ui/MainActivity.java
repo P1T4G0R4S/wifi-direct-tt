@@ -157,6 +157,10 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, ChangeDevice.class);
                 this.startActivity(intent);
                 break;
+            case R.id.colaborar:
+                Intent intent_col = new Intent(this, ContactSearch.class);
+                this.startActivity(intent_col);
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }

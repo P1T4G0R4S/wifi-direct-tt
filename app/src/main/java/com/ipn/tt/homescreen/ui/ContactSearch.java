@@ -77,6 +77,8 @@ public class ContactSearch extends AppCompatActivity {
         addWifiService();
 
         showDeviceInformation();
+
+        prepareResetButton();
     }
 
     @Override
@@ -85,6 +87,7 @@ public class ContactSearch extends AppCompatActivity {
 
         removeWifiP2pService();
         removeWifiService();
+        finish();
     }
 
     private void prepareResetButton(){
@@ -105,7 +108,7 @@ public class ContactSearch extends AppCompatActivity {
 
         setServiceList();
         initEnableExternalStorage();
-        registerCommunicationReceiver();
+        //registerCommunicationReceiver();
         addWifiService();
 
 
@@ -271,6 +274,8 @@ public class ContactSearch extends AppCompatActivity {
 
             wifiDirectHandler = binder.getService();
             Log.i(TAG, "WifiDirectHandler service bound");
+
+            showDeviceInformation();
         }
 
         /**
