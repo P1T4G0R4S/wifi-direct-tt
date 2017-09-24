@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.net.wifi.p2p.WifiP2pDevice;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -32,6 +33,11 @@ import com.ipn.tt.homescreen.Utils.NetworkUtil;
 import com.ipn.tt.homescreen.Utils.UpgradeAppUtils;
 import com.ipn.tt.homescreen.adapters.ServiceListViewAdapter;
 import com.ipn.tt.homescreen.network.DeviceType;
+import com.ipn.tt.homescreen.network.Message;
+import com.ipn.tt.homescreen.network.ObjectType;
+import com.ipn.tt.homescreen.tasks.SendMessageTask;
+
+import org.apache.commons.lang3.SerializationUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -239,10 +245,15 @@ public class ContactSearch extends AppCompatActivity {
             } else if (intent.getAction().equals(WifiDirectHandler.Action.SERVICE_CONNECTED)) {
                 // This device has connected to another device broadcasting the same service
                 Log.i(TAG, "Service connected onReceive()");
+                pref = context.getSharedPreferences("Options", MODE_PRIVATE);
+                int deviceTypePref = pref.getInt("devicetype",999);
+                DeviceType deviceType = DeviceType.get(deviceTypePref);
+                processConnectionIn(deviceType);
 
             } else if (intent.getAction().equals(WifiDirectHandler.Action.MESSAGE_RECEIVED)) {
                 // A message from the Communication Manager has been received
                 Log.i(TAG, "Message received");
+                new ReceiveMessageTask().execute(intent.getByteArrayExtra(WifiDirectHandler.MESSAGE_KEY));
 
             } else if (intent.getAction().equals(WifiDirectHandler.Action.DNS_SD_SERVICE_AVAILABLE)) {
                 Log.d(TAG, "Service Discovered and Accessed " + (new Date()).getTime());
@@ -259,10 +270,90 @@ public class ContactSearch extends AppCompatActivity {
                     return;
                 }
 
-                servicesListAdapter.addUnique(service);
+                if (servicesListAdapter.addUnique(service)) {
+                    if (networkUtil.canConnectTo(service)) {
+                        onServiceClick(service);
+                    }
+                }
 
                 Log.d(TAG + "TEST", "ServicesList count: " + servicesListAdapter.getCount());
             }
+        }
+    }
+
+    private class ReceiveMessageTask extends AsyncTask<byte[], Void, Message> {
+        protected Message doInBackground(byte[]... objects) {
+            byte[] readMessage = objects[0];
+            Message message = SerializationUtils.deserialize(readMessage);
+            switch(message.messageType) {
+                case TEXT:
+                    Log.i(TAG, "Text message received");
+                    //return new String(message.message);
+                    return message;
+            }
+            Log.d(TAG,"ReceiveMessageTask");
+            return null;
+        }
+
+        protected void onProgressUpdate(Void... progress) {
+        }
+
+        protected void onPostExecute(Message result) {
+            processReceivedMessage(result);
+        }
+    }
+
+    private void processReceivedMessage(Message msg) {
+        String s = new String(msg.message);
+
+        if (s.equals("")) return;
+        Log.d(TAG, "Received: " + s);
+
+        switch (msg.objectType) {
+            case HELLO:
+                break;
+            case REQUEST:
+                break;
+            case DISCOVERY:
+                break;
+            case RESULT: //This is gotten by RANGE_EXTENDER only
+                break;
+            case OK:
+                break;
+            default:
+        }
+    }
+
+    private void processConnectionIn(DeviceType deviceType) {
+        Log.d(TAG, "processConnectionIn(); " + deviceType.toString());
+        switch (deviceType) {
+            case ACCESS_POINT:
+                Log.i(TAG, "ACCESS_POINT");
+                Log.d(TAG, "Waiting for incoming messages.");
+                break;
+            case ACCESS_POINT_WREQ:
+                Log.i(TAG, "ACCESS_POINT_WREQ");
+                Log.d(TAG, "Waiting for incoming messages.");
+                break;
+            case ACCESS_POINT_WRES:
+                Log.i(TAG, "ACCESS_POINT_WRES");
+                Log.d(TAG, "Waiting for incoming messages.");
+                break;
+            case RANGE_EXTENDER:
+                Log.i(TAG, "RANGE_EXTENDER");
+                new SendMessageTask().execute(getWifiHandler(), "RANGE_EXTENDER -> DISCOVERY", ObjectType.DISCOVERY);
+                break;
+            case EMITTER:
+                Log.i(TAG, "EMITTER");
+                new SendMessageTask().execute(getWifiHandler(), "EMITTER -> HELLO", ObjectType.HELLO);
+                break;
+            case QUERIER:
+                Log.i(TAG, "QUERIER");
+                new SendMessageTask().execute(getWifiHandler(), "QUERIER -> REQUEST", ObjectType.REQUEST);
+                break;
+            default:
+                //new SendMessageTask().execute(activity, json.toJson(activity.curDevice), ObjectType.HELLO);
+                break;
         }
     }
 

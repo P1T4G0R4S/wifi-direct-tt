@@ -4,7 +4,9 @@ import android.util.Log;
 
 import com.ipn.tt.homescreen.network.DeviceType;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.rit.se.wifibuddy.DnsSdService;
 import edu.rit.se.wifibuddy.DnsSdTxtRecord;
@@ -16,7 +18,7 @@ import edu.rit.se.wifibuddy.DnsSdTxtRecord;
 public class NetworkUtil {
     private static NetworkUtil singleton;
     private DeviceType myType;
-    private List<DnsSdService> deviceList;
+    private Map<String, DnsSdService> connectedDevices;
 
     private NetworkUtil() { }
 
@@ -24,10 +26,16 @@ public class NetworkUtil {
         this.myType = myType;
     }
 
-    public String getStringFromRecord(DnsSdTxtRecord txtRecord) {
-        //networkUtil = NetworkUtil.getInstance(DeviceType.EMITTER);
-        //boolean result = networkUtil.canDiscoverTo(DeviceType.ACCESS_POINT.toString());
-        return "";
+    public Map<String, DnsSdService> getConnectedDevices() {
+        return connectedDevices;
+    }
+
+    public void setConnectedDevices(Map<String, DnsSdService> connectedDevices) {
+        this.connectedDevices = connectedDevices;
+    }
+
+    public boolean canConnectTo(DnsSdService service) {
+        return true;
     }
 
     public boolean canDiscoverTo(String discoveredDeviceType) {
@@ -70,6 +78,11 @@ public class NetworkUtil {
         if(deviceType != null) {
             singleton.myType = deviceType;
         }
+
+        if (singleton.connectedDevices == null) {
+            singleton.connectedDevices = new HashMap<>();
+        }
+
         return singleton;
     }
 }
